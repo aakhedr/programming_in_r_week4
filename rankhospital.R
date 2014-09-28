@@ -29,9 +29,12 @@ rankhospital <- function(state, outcome, num="best") {
         ordered <- data_subset[order(data_subset[[matched]], 
                                      data_subset[["Hospital.Name"]]), ]
         if (num == "best") {
-                num = 1
+                num <- 1
         } else if (num == "worst") {
-                num = length(ordered)
+                num <- length(ordered[[matched]])
+                while (is.na(ordered[num, matched])) {
+                        num <- num - 1
+                }
         }
         return(as.character(ordered[num, "Hospital.Name"]))
 }
