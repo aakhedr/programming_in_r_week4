@@ -10,7 +10,7 @@ match_outcome <- function(string, strings) {
 
 best <- function(state, outcome) {
         ## read outcome date
-        data <- read.csv("outcome-of-care-measures.csv")
+        data <- read.csv("outcome-of-care-measures.csv", na.string="Not Available")
         names <- names(data)
 
         ## check that state and outcome are valid
