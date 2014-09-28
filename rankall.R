@@ -34,24 +34,38 @@ rankall <- function(outcome, num="best") {
                 }
         }
         if (num == "best") {
-                num <- 1
-        }
-        else if (num == "worst") {
+                hospitals <- as.character(ordered[ordered$Rank==1, 
+                                                  "Hospital.Name"])
+                return(data.frame(hospital=hospitals, state=states, 
+                                  row.names=states))
+        } else if (num == "worst") {
                 hospitals <- character()
                 for (i in 1:length(states)) {
-                        ordered_subset <- subset(ordered, ordered$State==states[i])
+                        ordered_subset <- subset(ordered, ordered$State==
+                                                         states[i])
                         num <- nrow(ordered_subset)
                         while (is.na(ordered_subset[num, matched])) {
                                 num <- num - 1
                         }
                         hospital <- as.character(ordered[ordered$Rank==num & 
-                                        ordered$State==states[i], "Hospital.Name"])
+                                        ordered$State==states[i], 
+                                        "Hospital.Name"])
+                        hospitals <- c(hospitals, hospital)
+                }
+                return(data.frame(hospital=hospitals, state=states, 
+                                  row.names=states))
+        } else {
+                hospitals <- character()
+                for (i in 1:length(states)) {
+                        hospital <- as.character(ordered[ordered$Rank==num & 
+                                        ordered$State==states[i], 
+                                        "Hospital.Name"])
+                        if (length(hospital)==0) {
+                                hospital <- "<NA>"
+                        }
                         hospitals <- c(hospitals, hospital)
                 }
                 return(data.frame(hospital=hospitals, state=states, 
                                   row.names=states))
         }
-        hospitals <- as.character(ordered[ordered$Rank==num, "Hospital.Name"])
-        st <- ordered[ordered$Rank==num, "State"]
-        return(data.frame(hospital=hospitals, state=st, row.names=st))
 }
